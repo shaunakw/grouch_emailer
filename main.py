@@ -1,10 +1,13 @@
-import time
+import time, sys
+
+from datetime import datetime
 
 from notifiers import load_notifiers, notify
 
 notifiers = load_notifiers()
 
-print('Loaded notifiers')
+print('Loaded all notifiers')
+print()
 
 while True:
   for n in notifiers:
@@ -43,4 +46,7 @@ while True:
       ]
       notify(n, contents)
   
-  time.sleep(0.5)
+  now = datetime.now()
+  sys.stdout.write(f'\rLast time checked: {now.strftime("%I:%M:%S%p")}')
+  
+  time.sleep(1)

@@ -29,7 +29,10 @@ def load_notifiers() -> list[Notifier]:
     smtp = yagmail.SMTP(config['yagmail']['user'], config['yagmail']['password'])
 
     term = get_term(config['season'])
-    notifiers = [Notifier(i['crn'], term, i['emails']) for i in config['notifiers']]
+    notifiers: list[Notifier] = []
+    for i in config['notifiers']:
+      notifiers.append(Notifier(i['crn'], term, i['emails']))
+      print(f'Loaded notifier for {notifiers[-1].course.name}')
     return notifiers
 
 def notify(notifier: Notifier, contents: list[str]):
