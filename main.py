@@ -6,8 +6,7 @@ from notifiers import load_notifiers, notify
 
 notifiers = load_notifiers()
 
-print('Loaded all notifiers')
-print()
+print('Loaded all notifiers\n')
 
 while True:
   try:
@@ -46,9 +45,9 @@ while True:
           f'CRN: {n.course.crn}'
         ]
         notify(n, contents)
-    
+
     now = datetime.now()
-    sys.stdout.write(f'\rLast time checked: {now.strftime("%I:%M:%S%p")}')
+    sys.stdout.write(f'Last time checked: {now.strftime("%I:%M:%S%p")}\r')
     
     time.sleep(1)
   except:

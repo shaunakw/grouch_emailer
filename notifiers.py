@@ -40,4 +40,4 @@ def load_notifiers() -> list[Notifier]:
 def notify(notifier: Notifier, contents: list[str]):
   subject = f'Registration Update: {notifier.course.name}'
   smtp.send(bcc=notifier.emails, subject=subject, contents=contents)
-  print(f'Notified {len(notifier.emails)} people about {notifier.course.crn}')
+  print(f'Notified {len(notifier.emails)} people about {notifier.course.name}')
