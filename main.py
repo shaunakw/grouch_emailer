@@ -51,4 +51,4 @@ while True:
   except Exception as ex:
     pass
   
-  time.sleep(1)
+  time.sleep(0.5)
