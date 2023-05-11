@@ -5,29 +5,29 @@ import requests
 from bs4 import BeautifulSoup
 import re
 
+s = requests.Session()
+
 class Course:
     def __init__(self, crn: str, term: str):
         self.crn = crn
         self.term = term # default
         url = 'https://oscar.gatech.edu/bprod/bwckschd.p_disp_detail_sched?term_in='
         url += self.term + '&crn_in=' + self.crn
-        with requests.Session() as s:
-            with s.get(url) as page:
-                soup = BeautifulSoup(page.content, 'html.parser')
-                headers = soup.find_all('th', class_="ddlabel")
-                self.name = headers[0].getText()
+        with s.get(url) as page:
+            soup = BeautifulSoup(page.content, 'html.parser')
+            headers = soup.find_all('th', class_="ddlabel")
+            self.name = headers[0].getText()
 
     def __get_prereqs(self):
         url = 'https://oscar.gatech.edu/bprod/bwckschd.p_disp_detail_sched?term_in='
         url += self.term + '&crn_in=' + self.crn
 
-        with requests.Session() as s:
-            with s.get(url) as page:
-                soup = BeautifulSoup(page.content, 'html.parser')
-                p = soup.find('td', class_="dddefault")
-                txt = p.getText()
-                idx = txt.index("Prerequisites:")
-                return txt[idx:len(txt)-4]
+        with s.get(url) as page:
+            soup = BeautifulSoup(page.content, 'html.parser')
+            p = soup.find('td', class_="dddefault")
+            txt = p.getText()
+            idx = txt.index("Prerequisites:")
+            return txt[idx:len(txt)-4]
     
     def __is_not_fodder(self, s: str) -> bool:
         fodder = ['undergraduate', 'graduate', 'level', 'grade', 'of', 'minimum', 'semester']
@@ -53,15 +53,14 @@ class Course:
         url = 'https://oscar.gatech.edu/bprod/bwckschd.p_disp_detail_sched?term_in='
         url += term + '&crn_in=' + self.crn
 
-        with requests.Session() as s:
-            with s.get(url) as page:
-                soup = BeautifulSoup(page.content, 'html.parser')
-                table = soup.find('caption', string='Registration Availability').find_parent('table')
+        with s.get(url) as page:
+            soup = BeautifulSoup(page.content, 'html.parser')
+            table = soup.find('caption', string='Registration Availability').find_parent('table')
 
-                if len(table) == 0: raise ValueError()
+            if len(table) == 0: raise ValueError()
 
-                data = [int(info.getText()) for info in table.findAll('td', class_='dddefault')]
-                return data
+            data = [int(info.getText()) for info in table.findAll('td', class_='dddefault')]
+            return data
 
     def get_registration_info(self, term: str):
         self.term = term
