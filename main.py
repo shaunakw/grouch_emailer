@@ -4,6 +4,8 @@ from datetime import datetime
 
 from notifiers import load_notifiers, notify
 
+print('Starting...')
+
 notifiers = load_notifiers()
 
 print('Loaded all notifiers\n')
@@ -49,6 +51,6 @@ while True:
     now = datetime.now()
     sys.stdout.write(f'Last time checked: {now.strftime("%I:%M:%S%p")}\r')
   except Exception as ex:
-    pass
+    print(ex)
   
   time.sleep(0.5)
