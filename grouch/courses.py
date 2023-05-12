@@ -6,6 +6,7 @@ from bs4 import BeautifulSoup
 import re
 
 s = requests.Session()
+timeout = 10
 
 class Course:
     def __init__(self, crn: str, term: str):
@@ -13,7 +14,7 @@ class Course:
         self.term = term # default
         url = 'https://oscar.gatech.edu/bprod/bwckschd.p_disp_detail_sched?term_in='
         url += self.term + '&crn_in=' + self.crn
-        with s.get(url, timeout=5) as page:
+        with s.get(url, timeout=timeout) as page:
             soup = BeautifulSoup(page.content, 'html.parser')
             headers = soup.find_all('th', class_="ddlabel")
             self.name = headers[0].getText()
@@ -22,7 +23,7 @@ class Course:
         url = 'https://oscar.gatech.edu/bprod/bwckschd.p_disp_detail_sched?term_in='
         url += self.term + '&crn_in=' + self.crn
 
-        with s.get(url, timeout=5) as page:
+        with s.get(url, timeout=timeout) as page:
             soup = BeautifulSoup(page.content, 'html.parser')
             p = soup.find('td', class_="dddefault")
             txt = p.getText()
@@ -53,7 +54,7 @@ class Course:
         url = 'https://oscar.gatech.edu/bprod/bwckschd.p_disp_detail_sched?term_in='
         url += term + '&crn_in=' + self.crn
 
-        with s.get(url, timeout=5) as page:
+        with s.get(url, timeout=timeout) as page:
             soup = BeautifulSoup(page.content, 'html.parser')
             table = soup.find('caption', string='Registration Availability').find_parent('table')
 
