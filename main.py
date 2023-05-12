@@ -51,6 +51,7 @@ while True:
     now = datetime.now()
     sys.stdout.write(f'Last time checked: {now.strftime("%I:%M:%S%p")}\r')
   except Exception as ex:
-    print(ex)
+    now = datetime.now()
+    print(f'[{now.strftime("%I:%M:%S%p")}] {ex}')
   
   time.sleep(0.5)
