@@ -3,6 +3,8 @@ from __future__ import annotations
 import json
 import yagmail
 
+from datetime import datetime
+
 from grouch.courses import Course
 from grouch.term import get_term
 
@@ -40,4 +42,5 @@ def load_notifiers() -> list[Notifier]:
 def notify(notifier: Notifier, contents: list[str]):
   subject = f'Registration Update: {notifier.course.name}'
   smtp.send(bcc=notifier.emails, subject=subject, contents=contents)
-  print(f'Notified {len(notifier.emails)} people about {notifier.course.name}')
+  now = datetime.now()
+  print(f'[{now.strftime("%I:%M:%S%p")}] Notified {len(notifier.emails)} people about {notifier.course.name}')
